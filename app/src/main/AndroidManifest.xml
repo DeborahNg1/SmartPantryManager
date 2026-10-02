@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartPantryManager">
 
-        <!-- Main Launcher Activity -->
+        <!-- Main Launcher Screen -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Core App Activities -->
+        <!-- Core App Screens -->
         <activity
             android:name=".AddEditActivity"
             android:exported="false" />
@@ -36,33 +36,24 @@
             android:name=".SettingsActivity"
             android:exported="false" />
 
-        <!-- Additional Activities (Activities 6 through 12) -->
         <activity
-            android:name=".ActivitySix"
+            android:name=".RecipeMatcher"
             android:exported="false" />
 
         <activity
-            android:name=".ActivitySeven"
+            android:name=".PantryAdopter"
             android:exported="false" />
 
         <activity
-            android:name=".ActivityEight"
+            android:name=".PantryItem"
             android:exported="false" />
 
         <activity
-            android:name=".ActivityNine"
+            android:name=".RecipeAdopter"
             android:exported="false" />
 
         <activity
-            android:name=".ActivityTen"
-            android:exported="false" />
-
-        <activity
-            android:name=".ActivityEleven"
-            android:exported="false" />
-
-        <activity
-            android:name=".ActivityTwelve"
+            android:name=".MainActivity"
             android:exported="false" />
 
     </application>

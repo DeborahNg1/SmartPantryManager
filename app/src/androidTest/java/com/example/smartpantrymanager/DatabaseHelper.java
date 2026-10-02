@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_RECIPES = "recipes";
     public static final String COL_RECIPE_ID = "id";
     public static final String COL_RECIPE_NAME = "name";
-    public static final String COL_RECIPE_INGREDIENTS = "ingredients"; // Format: name:qty:unit;
+    public static final String COL_RECIPE_INGREDIENTS = "ingredients";
     public static final String COL_RECIPE_INSTRUCTIONS = "instructions";
 
     public DatabaseHelper(Context context) {
@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createPantry);
         db.execSQL(createRecipes);
 
-        // Pre-load Recipes on First Run
+
         seedRecipes(db);
     }
 
@@ -61,7 +61,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Seed Pre-loaded Recipes
     private void seedRecipes(SQLiteDatabase db) {
         String[][] recipes = {
                 {"Scrambled Eggs", "egg:2:pcs;butter:1:tbsp", "Whisk eggs. Melt butter in pan and scramble over medium heat."},
