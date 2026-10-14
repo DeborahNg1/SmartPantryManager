@@ -17,26 +17,31 @@
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ingredient Name (e.g. Egg)"/>
+        android:hint="Ingredient Name (e.g. Egg)"
+        android:layout_marginBottom="12dp"/>
 
     <EditText
         android:id="@+id/etQty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Quantity (e.g. 2)"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="12dp"/>
 
-    <EditText
-        android:id="@+id/etUnit"
+    <Spinner
+        android:id="@+id/spinnerUnit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Unit (e.g. pcs, g, tbsp)"/>
+        android:entries="@array/unit_array"
+        android:layout_marginBottom="16dp"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/etExpiry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Expiry Date (e.g. 2026-12-31)"/>
+        android:hint="Expiry Date (e.g. 2026-12-31)"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnSave"
@@ -45,4 +50,4 @@
         android:text="Save Item"
         android:layout_marginTop="20dp"/>
 
-</LinearLayout>
+</LinearLayout>s

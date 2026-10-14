@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Cute Pastel Palette -->
+    <color name="primary_pink">#FFB5A7</color>
+    <color name="primary_dark_pink">#E09F91</color>
+    <color name="accent_sage">#D8F3DC</color>
+    <color name="background_cream">#FFF9F5</color>
+    <color name="text_dark">#4A4E69</color>
 </resources>

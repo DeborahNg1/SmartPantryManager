@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,41 +10,41 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvRecipeTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvDetailTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="12dp"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Required Ingredients:"
-            android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/tvIngredientsList"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvDetailIngredients"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Instructions:"
-            android:textSize="18sp"
+            android:text="Step-by-Step Instructions:"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/tvInstructionsText"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvDetailInstructions"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"/>
 
     </LinearLayout>
 </ScrollView>

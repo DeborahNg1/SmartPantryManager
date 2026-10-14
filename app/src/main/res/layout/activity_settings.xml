@@ -8,23 +8,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="24dp"
         android:layout_above="@id/bottomNavigation">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="App Settings"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp"/>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enable Pantry Reminders"
+            android:textSize="16sp"
+            android:paddingVertical="12dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchAlerts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Expiring-Soon Alerts"
-            android:textSize="18sp"/>
+            android:textSize="16sp"
+            android:paddingVertical="12dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchDarkMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dark Mode"
+            android:textSize="16sp"
+            android:paddingVertical="12dp"/>
 
     </LinearLayout>
 
@@ -33,6 +50,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_menu_background"
+        app:itemIconTint="@color/primary_dark_pink"
+        app:itemTextColor="@color/text_dark"
         app:menu="@menu/bottom_nav_menu"/>
 
 </RelativeLayout>

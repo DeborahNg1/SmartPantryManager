@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "pantry_manager.db";
@@ -58,21 +61,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void seedRecipes(SQLiteDatabase db) {
         String[][] recipes = {
-                {"Scrambled Eggs", "egg:2:pcs;butter:1:tbsp", "Whisk eggs. Melt butter in pan and scramble over medium heat."},
-                {"Rice and Beans", "rice:1:cup;beans:1:can", "Cook rice. Heat beans. Mix together and serve."},
+                {"Scrambled Eggs", "egg:2:pcs;butter:1:tbsp;salt:1:pinch", "Whisk eggs with a pinch of salt. Melt butter in pan and scramble over medium heat."},
+                {"Rice and Beans", "rice:1:cup;beans:1:can;salt:1:pinch", "Cook rice with salt. Heat beans. Mix together and serve."},
                 {"Pancakes", "flour:1:cup;milk:1:cup;egg:1:pcs;butter:2:tbsp", "Whisk batter. Pour onto hot greased pan and flip when bubbly."},
-                {"Tomato Soup", "tomato:4:pcs;water:2:cups;butter:1:tbsp", "Boil tomatoes, blend, and simmer with butter."},
+                {"Tomato Soup", "tomato:4:pcs;water:2:cups;butter:1:tbsp;salt:1:pinch", "Boil tomatoes, blend, and simmer with butter and salt."},
                 {"Fruit Salad", "apple:1:pcs;banana:1:pcs;orange:1:pcs", "Chop all fruits and toss in a bowl."},
                 {"Boiled Eggs", "egg:2:pcs;water:4:cups", "Boil eggs in water for 8 minutes."},
                 {"French Toast", "bread:2:slices;egg:1:pcs;milk:0.25:cup", "Whisk egg and milk. Dip bread and fry until golden."},
                 {"Oatmeal", "oats:1:cup;water:2:cups", "Boil oats in water for 5 minutes stirring constantly."},
-                {"Creamy Chicken Pasta", "pasta:200:g;chicken:250:g;cream:1:cup;garlic:2:cloves", "Boil pasta. Sauté chicken and garlic, then stir in cream and pasta."},
-                {"Potato Salad", "potato:3:pcs;mayo:3:tbsp;egg:2:pcs", "Boil potatoes and eggs. Dice, mix with mayo, and season."},
+                {"Creamy Chicken Pasta", "pasta:200:g;chicken:250:g;cream:1:cup;garlic:2:cloves;salt:1:tsp", "Boil salted pasta. Sauté chicken and garlic, then stir in cream and pasta."},
+                {"Potato Salad", "potato:3:pcs;mayo:3:tbsp;egg:2:pcs;salt:1:pinch", "Boil potatoes and eggs. Dice, mix with mayo, and season with salt."},
                 {"Strawberry Smoothie", "strawberry:1:cup;milk:1:cup;yogurt:0.5:cup", "Blend strawberries, milk, and yogurt until smooth."},
-                {"Beef Burger", "ground beef:200:g;bun:1:pcs;lettuce:1:leaf;tomato:1:slice", "Form beef into patty, grill, and assemble burger with toppings."},
+                {"Beef Burger", "ground beef:200:g;bun:1:pcs;lettuce:1:leaf;tomato:1:slice;salt:1:pinch", "Season beef with salt, form into patty, grill, and assemble burger with toppings."},
                 {"Ice Cream", "cream:2:cups;milk:1:cup;sugar:0.5:cup", "Whisk ingredients together, freeze, and churn until smooth."},
                 {"Trifle", "cake:200:g;custard:1:cup;jelly:1:cup;fruit:1:cup", "Layer sponge cake, jelly, custard, and fruit in a glass container."},
-                {"Lasagna", "pasta:200:g;ground beef:300:g;cheese:100:g;tomato sauce:1:can", "Layer pasta sheets, cooked beef sauce, and cheese, then bake until golden."}
+                {"Lasagna", "pasta:200:g;ground beef:300:g;cheese:100:g;tomato sauce:1:can;salt:1:tsp", "Layer pasta sheets, cooked seasoned beef sauce, and cheese, then bake until golden."}
         };
 
         for (String[] r : recipes) {
@@ -89,9 +92,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(COL_PANTRY_NAME, name.trim().toLowerCase());
         cv.put(COL_PANTRY_QTY, qty);
-        cv.put(COL_PANTRY_UNIT, unit.trim().toLowerCase());
+        cv.put(COL_PANTRY_UNIT, unit != null ? unit.trim().toLowerCase() : "");
         cv.put(COL_PANTRY_EXPIRY, expiry);
-        return db.insert(TABLE_PANTRY, null, cv) != -1;
+        long result = db.insert(TABLE_PANTRY, null, cv);
+        return result != -1;
+    }
+
+    public boolean addPantryItem(String name, int quantity, String category) {
+        return addPantryItem(name, (double) quantity, category, "");
     }
 
     public boolean updatePantryItem(int id, String name, double qty, String unit, String expiry) {
@@ -99,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(COL_PANTRY_NAME, name.trim().toLowerCase());
         cv.put(COL_PANTRY_QTY, qty);
-        cv.put(COL_PANTRY_UNIT, unit.trim().toLowerCase());
+        cv.put(COL_PANTRY_UNIT, unit != null ? unit.trim().toLowerCase() : "");
         cv.put(COL_PANTRY_EXPIRY, expiry);
         return db.update(TABLE_PANTRY, cv, COL_PANTRY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
@@ -115,5 +123,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAllRecipes() {
         return this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_RECIPES, null);
+    }
+
+    public List<String> getPantryItemNames() {
+        List<String> itemList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PANTRY, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int nameColumnIndex = cursor.getColumnIndex("item_name");
+            if (nameColumnIndex == -1) {
+                nameColumnIndex = cursor.getColumnIndex(COL_PANTRY_NAME); // Fallback check
+            }
+
+            if (nameColumnIndex != -1) {
+                do {
+                    String itemName = cursor.getString(nameColumnIndex);
+                    if (itemName != null) {
+                        itemList.add(itemName.toLowerCase().trim());
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return itemList;
     }
 }

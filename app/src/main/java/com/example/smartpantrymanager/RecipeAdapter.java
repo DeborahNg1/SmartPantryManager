@@ -12,10 +12,10 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
-    private Context context;
-    private List<RecipeMatcher.Recipe> recipeList;
+    private final Context context;
+    private final List<Recipe> recipeList;
 
-    public RecipeAdapter(Context context, List<RecipeMatcher.Recipe> recipeList) {
+    public RecipeAdapter(Context context, List<Recipe> recipeList) {
         this.context = context;
         this.recipeList = recipeList;
     }
@@ -29,14 +29,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        RecipeMatcher.Recipe recipe = recipeList.get(position);
-        holder.tvName.setText(recipe.name);
+        Recipe recipe = recipeList.get(position);
+        holder.tvTitle.setText(recipe.getTitle());
+        String ingString = String.join(", ", recipe.getRequiredIngredients());
+        holder.tvIngredients.setText("Required: " + ingString);
 
+        // Open Recipe Detail Activity on click
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, RecipeDetailActivity.class);
-            intent.putExtra("NAME", recipe.name);
-            intent.putExtra("INGREDIENTS", recipe.ingredients);
-            intent.putExtra("INSTRUCTIONS", recipe.instructions);
+            intent.putExtra("title", recipe.getTitle());
+            intent.putExtra("ingredients", ingString);
+            intent.putExtra("instructions", recipe.getInstructions());
             context.startActivity(intent);
         });
     }
@@ -47,11 +50,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName;
+        TextView tvTitle, tvIngredients;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tvRecipeName);
+            tvTitle = itemView.findViewById(R.id.tvRecipeTitle);
+            tvIngredients = itemView.findViewById(R.id.tvRecipeIngredients);
         }
     }
 }

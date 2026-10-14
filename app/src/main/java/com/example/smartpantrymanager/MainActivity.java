@@ -3,7 +3,7 @@ package com.example.smartpantrymanager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.Button;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private PantryAdapter adapter;
     private List<PantryItem> pantryList;
     private DatabaseHelper dbHelper;
-    private FloatingActionButton fabAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,31 +25,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerViewPantry);
-        fabAdd = findViewById(R.id.fabAdd);
+
+        FloatingActionButton fabAdd = findViewById(R.id.fab_add);
+
         dbHelper = new DatabaseHelper(this);
         pantryList = new ArrayList<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        fabAdd.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, AddEditActivity.class));
-        });
+        if (fabAdd != null) {
+            fabAdd.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AddEditActivity.class)));
+        }
 
         BottomNavigationView nav = findViewById(R.id.bottomNavigation);
-        nav.setSelectedItemId(R.id.nav_pantry);
-        nav.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_pantry) {
-                return true;
-            } else if (itemId == R.id.nav_suggestions) {
-                startActivity(new Intent(MainActivity.this, SuggestedRecipesActivity.class));
-                return true;
-            } else if (itemId == R.id.nav_settings) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                return true;
-            }
-            return false;
-        });
+        if (nav != null) {
+            nav.setSelectedItemId(R.id.nav_pantry);
+            nav.setOnItemSelectedListener(item -> {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_pantry) {
+                    return true;
+                } else if (itemId == R.id.nav_suggestions) {
+                    startActivity(new Intent(MainActivity.this, SuggestedRecipesActivity.class));
+                    finish();
+                    return true;
+                } else if (itemId == R.id.nav_settings) {
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    finish();
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     @Override
@@ -75,5 +80,17 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter = new PantryAdapter(this, pantryList, dbHelper);
         recyclerView.setAdapter(adapter);
+    }
+
+    public void confirmDelete(int itemId) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Item")
+                .setMessage("Do you want to remove this item from your pantry?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    dbHelper.deletePantryItem(itemId);
+                    loadPantryItems();
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }
